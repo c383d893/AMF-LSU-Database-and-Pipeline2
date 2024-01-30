@@ -37,7 +37,7 @@ for (tree in treeFiles) {
 ####### Load qiime2 output and prune out non-ACA ASVs #######
 print('Loading qiime2 output to be pruned - ASV table')
 # Load ASV table and prune
-ASVs <- read.delim('./ASVtable_clean_AMFonly.tsv',sep='\t',header=TRUE)
+ASVs <- read.delim('./ASVtable_clean_BLASTonly.tsv',sep='\t',header=TRUE)
 AMFACAASVs <- subset(ASVs,X.ASV.ID %in% AMFACA.ASVs) # filter out non-ACA ASVs using the list we generated above
 # Write to file
 write.table(AMFACAASVs,file='./ASVtable_clean_AMFACAonly.tsv',sep='\t',quote=FALSE,row.names=FALSE,col.names = TRUE)
@@ -88,7 +88,7 @@ for (tree in treeFiles) {
 ####### Load qiime2 output and prune out non-AMB ASVs #######
 print('Loading qiime2 output to be pruned - ASV table')
 # Load ASV table and prune
-ASVs <- read.delim('./ASVtable_clean_AMFonly.tsv',sep='\t',header=TRUE)
+ASVs <- read.delim('./ASVtable_clean_BLASTonly.tsv',sep='\t',header=TRUE)
 AMFAMBASVs <- subset(ASVs,X.ASV.ID %in% AMFAMB.ASVs) # filter out non-AMB ASVs using the list we generated above
 # Write to file
 write.table(AMFAMBASVs,file='./ASVtable_clean_AMFAMBonly.tsv',sep='\t',quote=FALSE,row.names=FALSE,col.names = TRUE)
@@ -138,7 +138,7 @@ for (tree in treeFiles) {
 ####### Load qiime2 output and prune out non-ARC ASVs #######
 print('Loading qiime2 output to be pruned - ASV table')
 # Load ASV table and prune
-ASVs <- read.delim('./ASVtable_clean_AMFonly.tsv',sep='\t',header=TRUE)
+ASVs <- read.delim('./ASVtable_clean_BLASTonly.tsv',sep='\t',header=TRUE)
 AMFARCASVs <- subset(ASVs,X.ASV.ID %in% AMFARC.ASVs) # filter out non-ARC ASVs using the list we generated above
 # Write to file
 write.table(AMFARCASVs,file='./ASVtable_clean_AMFARConly.tsv',sep='\t',quote=FALSE,row.names=FALSE,col.names = TRUE)
@@ -188,7 +188,7 @@ for (tree in treeFiles) {
 ####### Load qiime2 output and prune out non-CLA ASVs #######
 print('Loading qiime2 output to be pruned - ASV table')
 # Load ASV table and prune
-ASVs <- read.delim('./ASVtable_clean_AMFonly.tsv',sep='\t',header=TRUE)
+ASVs <- read.delim('./ASVtable_clean_BLASTonly.tsv',sep='\t',header=TRUE)
 AMFCLAASVs <- subset(ASVs,X.ASV.ID %in% AMFCLA.ASVs) # filter out non-CLA ASVs using the list we generated above
 # Write to file
 write.table(AMFCLAASVs,file='./ASVtable_clean_AMFCLAonly.tsv',sep='\t',quote=FALSE,row.names=FALSE,col.names = TRUE)
@@ -238,7 +238,7 @@ for (tree in treeFiles) {
 ####### Load qiime2 output and prune out non-DIV ASVs #######
 print('Loading qiime2 output to be pruned - ASV table')
 # Load ASV table and prune
-ASVs <- read.delim('./ASVtable_clean_AMFonly.tsv',sep='\t',header=TRUE)
+ASVs <- read.delim('./ASVtable_clean_BLASTonly.tsv',sep='\t',header=TRUE)
 AMFDIVASVs <- subset(ASVs,X.ASV.ID %in% AMFDIV.ASVs) # filter out non-DIV ASVs using the list we generated above
 # Write to file
 write.table(AMFDIVASVs,file='./ASVtable_clean_AMFDIVonly.tsv',sep='\t',quote=FALSE,row.names=FALSE,col.names = TRUE)
@@ -338,7 +338,7 @@ for (tree in treeFiles) {
 ####### Load qiime2 output and prune out non-GLO ASVs #######
 print('Loading qiime2 output to be pruned - ASV table')
 # Load ASV table and prune
-ASVs <- read.delim('./ASVtable_clean_AMFonly.tsv',sep='\t',header=TRUE)
+ASVs <- read.delim('./ASVtable_clean_BLASTonly.tsv',sep='\t',header=TRUE)
 AMFGLOASVs <- subset(ASVs,X.ASV.ID %in% AMFGLO.ASVs) # filter out non-GLO ASVs using the list we generated above
 # Write to file
 write.table(AMFGLOASVs,file='./ASVtable_clean_AMFGLOonly.tsv',sep='\t',quote=FALSE,row.names=FALSE,col.names = TRUE)
@@ -438,7 +438,7 @@ for (tree in treeFiles) {
 ####### Load qiime2 output and prune out non-PAR ASVs #######
 print('Loading qiime2 output to be pruned - ASV table')
 # Load ASV table and prune
-ASVs <- read.delim('./ASVtable_clean_AMFonly.tsv',sep='\t',header=TRUE)
+ASVs <- read.delim('./ASVtable_clean_BLASTonly.tsv',sep='\t',header=TRUE)
 AMFPARASVs <- subset(ASVs,X.ASV.ID %in% AMFPAR.ASVs) # filter out non-PAR ASVs using the list we generated above
 # Write to file
 write.table(AMFPARASVs,file='./ASVtable_clean_AMFPARonly.tsv',sep='\t',quote=FALSE,row.names=FALSE,col.names = TRUE)
@@ -539,7 +539,7 @@ for (tree in treeFiles) {
 ####### Load qiime2 output and prune out non-SAC ASVs #######
 print('Loading qiime2 output to be pruned - ASV table')
 # Load ASV table and prune
-ASVs <- read.delim('./ASVtable_clean_AMFonly.tsv',sep='\t',header=TRUE)
+ASVs <- read.delim('./ASVtable_clean_BLASTonly.tsv',sep='\t',header=TRUE)
 AMFSACASVs <- subset(ASVs,X.ASV.ID %in% AMFSAC.ASVs) # filter out non-SAC ASVs using the list we generated above
 # Write to file
 write.table(AMFSACASVs,file='./ASVtable_clean_AMFSAConly.tsv',sep='\t',quote=FALSE,row.names=FALSE,col.names = TRUE)

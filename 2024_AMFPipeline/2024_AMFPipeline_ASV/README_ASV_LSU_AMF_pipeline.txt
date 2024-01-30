@@ -72,7 +72,7 @@ mkdir ./slurmOutputs
 ./raw/*R1_001.fastq.gz
 ./raw/*R2_001.fastq.gz
 
-# Reference database: 
+# Reference database:
 ./V15_LSUDB_3.23.21.fasta
 
 # AMF only reference database:
@@ -80,19 +80,19 @@ mkdir ./slurmOutputs
 
 # Bash scripts to run on SLURM
 ./AMFseqTrimParallel.sh   # this one will trim primers from the raw sequences
-./AMFtrimmedToASVs.sh   # this one will quality-filter the primer-trimmed sequences, truncate reads to fixed lengths based on user input, denoise, concatenate FWD and REV reads into ASVs, and cluster into 97% OTUs. Then, this separated FWD and REV to BLAST against AMF in the reference database and subsets the OTU seqs and table to include only BLAST positive OTUS
+./AMFtrimmedToASVs.sh   # this one will quality-filter the primer-trimmed sequences, truncate reads to fixed lengths based on user input, denoise, concatenate FWD and REV reads into ASVs. Then, this separated FWD and REV to BLAST against AMF in the reference database and subsets the ASV seqs and table to include only BLAST positive ASVS
 ./AMFalignseqs.sh # align sequence to database sequences (FWD and REV separately), then concatenate
 ./AMFbuildTree.sh   # this one places environmental (OTU) sequences onto the backbone tree using RAxML
-./AMFlaunchTrees.sh   # this one optimizes AMFbuildTree.sh for parallel processing for a particular dataset (just decides how many parallel jobs need to be run for a given set of OTUs)
+./AMFlaunchTrees.sh   # this one optimizes AMFbuildTree.sh for parallel processing for a particular dataset (just decides how many parallel jobs need to be run for a given set of ASVs)
 
 # R scripts:
 ./AMFdada2.R    # this gets called by AMFtrimmedToASVs.sh
-./AMFcladeExtract.R    # outputs OTU table and rep-seqs file subsetted to include AMF only
-./AMFcladeExtract_family.R # outputs OTU table and rep-seqs file subsetted to include AMF for each family
+./AMFcladeExtract.R    # outputs ASV table and rep-seqs file subsetted to include AMF only
+./AMFcladeExtract_family.R # outputs ASV table and rep-seqs file subsetted to include AMF for each family
 ./AMFconcatseqs.R # concatenates aligned seqs
 ./AMFalignseqs.R # aligns R1 and R2 separately 
 ./AMFcutLSUdb.R # Cuts database to match study seq cutoffs
-./AMFextractBLAST.R # extract blast OTUs
+./AMFextractBLAST.R # extract blast ASVs
 ./AMFsplitR1R2 # split R1 and R2 before blasting
 
 ###################################
@@ -111,6 +111,7 @@ zcat ./raw/*R2_001.fastq.gz | fastqc -o ./fastQCoutput stdin:R2_raw
 ###################################
 
 # IMPORTANT: update this to specify your number of samples: count: ls | wc -l
+# i.e. --array=1-10%8 becomes --array=1-120%8 for 120 sampmles
 
 sbatch --array=1-10%8 AMFseqTrimParallel.sh		# Samples will be trimmed in parallel (up to 8 simultaneously)
 
@@ -133,35 +134,37 @@ zcat ./trimmed/*R2_trimmed.fastq.gz | fastqc -o ./fastQCoutput stdin:R2
 ###################################
 ######### Quality filter,##########
 ######### denoise, BLAST,##########
-######### make OTU table ##########
+######### make ASV table ##########
 ###################################
 
 ### Specify truncation lengths for R1 and R2:
 # These (110 and 105) are default values; you should change them
-# Also change the workingdirectory to current directory
+# Also change the working directory to current directory
 # to fit your dataset (based on FastQC results)
 
 sbatch --export=R1cutoff=150,R2cutoff=110 AMFtrimmedToASVs.sh $(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
 # ^ this bash script will do everything from dada2 pipeline (make ASV table) to 
-# clustering ASVs into 97% OTUs, to
-# filtering the 97% OTU table, to
-# subsetting only BLAST positive OTUS and filtering seqs and table in preparation for RAXML.
+# Determining ASVS, to
+# filtering the ASV table, to
+# subsetting only BLAST positive ASVS and filtering seqs and table in preparation for RAXML.
 
 ###################################
 ##### Align DB and study seqs #####
 ##### R1, R2, concatenate #########
 ###################################
 
+# This script will align R1 and R2 reads with the reference database and then concatenate resulting alignments
+
 sbatch --export=R1cutoff=150,R2cutoff=110 AMFalignseqs.sh $(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
 ###################################
-####### Place OTU sequences #######
+####### Place ASV sequences #######
 ####### on the backbone tree ######
 ###################################
 
-# Place OTU representative sequences onto the backbone/reference tree using RAxML:
-# This script will determine how many OTUs need to be placed, and launch a batch
+# Place ASV representative sequences onto the backbone/reference tree using RAxML:
+# This script will determine how many ASVs need to be placed, and launch a batch
 # script with an appropriate number of tasks to be processed in parallel.
 
 bash AMFlaunchTrees.sh
@@ -182,9 +185,9 @@ find . -name "buildTree*.out" | xargs grep -E 'DUE TO TIME LIMIT'
 # TreeTools
 
 # After all tasks are finished running for AMFbuildTree.sh,
-# run this R script to determine which OTUs fall within the
-# AMF clade, and make subsets of the rep-seqs and OTU table
-# for AMF-OTUs and non-AMF-OTUs
+# run this R script to determine which ASVs fall within the
+# AMF clade, and make subsets of the rep-seqs and ASV table
+# for AMF-ASVs and non-AMF-ASVs
 
 module load gcc/8.2.0 r/4.2.2
 
