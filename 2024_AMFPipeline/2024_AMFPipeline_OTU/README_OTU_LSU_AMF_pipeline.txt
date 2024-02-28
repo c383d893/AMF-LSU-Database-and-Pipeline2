@@ -73,10 +73,10 @@ mkdir ./slurmOutputs
 ./raw/*R2_001.fastq.gz
 
 # Reference database:
-./V15_LSUDB_3.23.21.fasta
+./v16_LSUDB_2024.fasta
 
 # AMF only reference database:
-./V15_LSUDB_3.23.21_AMFONLY.fasta
+./v16_LSUDB_2024_AMFONLY.fasta
 
 # Bash scripts to run on SLURM
 ./AMFseqTrimParallel.sh   # this one will trim primers from the raw sequences
