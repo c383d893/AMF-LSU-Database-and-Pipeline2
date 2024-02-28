@@ -7,8 +7,10 @@
 #SBATCH --error=./slurmOutputs/AMFtrimmedToASVs.out
 #SBATCH --job-name=trm2asv
 
-module load gcc/8.2.0 r/4.2.2
-module load gcc/8.2.0 blast-plus/2.12.0
+### Activate conda 
+shift
+. ~/.bashrc
+conda activate ${CONDA_PIPELINE_ENV}
 
 # Get the working directory 
 SCRIPT_DIR=$1
@@ -22,10 +24,7 @@ Rscript AMFdada2withCutoffs.R
 echo;echo "DADA2 pipeline complete. Converting output files to Qiime format..."
 rm AMFdada2withCutoffs.R # remove temporary script once it's done running
 
-### Activate conda 
-shift
-. ~/.bashrc
-conda activate /cluster/project/crowther/miniconda3/envs/microbio
+
 
 # Define a temporary folder 
 mkdir $SCRIPT_DIR/tmp/
@@ -74,12 +73,7 @@ qiime tools export --input-path ./q2files/otu97table_clean.qza --output-path ./q
 biom convert -i ./q2files/feature-table.biom -o ./q2files/feature-table.tsv --to-tsv
 cat ./q2files/feature-table.tsv | sed 's/ASV//g' | awk '{print "OTU"$0}' | sed 's/OTU#OTU ID/X.OTU.ID/g' > ./otu97table_clean.tsv # rename file, relabel ASVs as OTUs, any perfect matched to database append OTU and move to working directory                                              
 echo;echo "export of sequences and OTU table complete"
-### Deactivate conda 
-conda deactivate
 
-# Load the modules again 
-module load gcc/8.2.0 r/4.2.2
-module load gcc/8.2.0 blast-plus/2.12.0
 
 # BLAST selection for tree building
 # Replace placeholder text in R script with user-provided truncation lengths for R1 and R2: SplitR1R2

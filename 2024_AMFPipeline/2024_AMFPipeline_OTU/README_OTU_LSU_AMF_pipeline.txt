@@ -11,23 +11,9 @@
 ####### Required programs #########
 ###################################
 
-# QIIME2/2019.10.0
-# cutadapt/4.4 (python/3.11.2)
-# fastqc/0.11.9
-# R/4.2.2
-# raxml/8.2.12
-# blast-plus/2.12.0
+# conda/miniconda/miniforge
+# QIIME2/2024.2
 
-###################################
-####### Required R packages #######
-###################################
-
-# dada2
-# ShortRead
-# Biostrings
-# stringr
-# ape
-# TreeTools
 
 ###################################
 ####### Directory structure #######
@@ -95,14 +81,59 @@ mkdir ./slurmOutputs
 ./AMFextractBLAST.R # extract blast OTUs
 ./AMFsplitR1R2 # split R1 and R2 before blasting
 
-###################################
-####### fastQC on raw data ########
-###################################
+################################
+#### Setup conda environment ###
+################################
 
-module load gcc/8.2.0 fastqc/0.11.9
+# 1. You must have conda installed on your cluster
+#    To check if its installed correctly run the
+#    following command.
+conda env list
 
-zcat ./raw/*R1_001.fastq.gz | fastqc -o ./fastQCoutput stdin:R1_raw 
-zcat ./raw/*R2_001.fastq.gz | fastqc -o ./fastQCoutput stdin:R2_raw
+# If conda is installed correctly then you will
+# see a list of environments and thier locations
+# at a minimum you should have a "base" environment
+
+# 2. Install the conda pipeline into a new
+#    environment. We use a custom yml file
+#    that sets up a qiime2 (2024.2) environment
+#    with additional packages (r-treetools).
+#    The name of the environment is by default
+#    "amf-pipeline" but can be changes in the
+#    command (-n "amf-pipeline").
+conda env create -n "amf_pipeline" --file "amf_pipeline_requirements.yml"
+
+#########################################
+####### Activate Qiime2, this will ######
+####### be our active environment #######
+####### for most subsequent steps #######
+#########################################
+
+# 1. Set name/location of conda environment
+CONDA_PIPELINE_ENV="amf_pipeline"
+
+# 2. Activate the amf pipeline environment
+conda activate ${CONDA_PIPELINE_ENV}
+
+#########################################
+####### View quality of raw data ########
+#########################################
+
+# 1.  Create qza object of raw reads
+qiime tools import \
+  --type 'SampleData[PairedEndSequencesWithQuality]' \
+  --input-path raw \
+  --input-format CasavaOneEightSingleLanePerSampleDirFmt \
+  --output-path demux-paired-end.qza
+
+# 2. Generate summaries for R1 and R2:
+qiime demux summarize \
+  --i-data demux-paired-end.qza \
+  --o-visualization demux-paired-end.qzv
+
+# 3. View demux-paired-end.qzv either on https://view.qiime2.org/ 
+#    or using a local install of qiime2 and the command:
+#    qiime tools view demux-paired-end.qzv
 
 ###################################
 ####### Initial processing: #######
@@ -115,18 +146,26 @@ zcat ./raw/*R2_001.fastq.gz | fastqc -o ./fastQCoutput stdin:R2_raw
 
 sbatch --array=1-10%8 AMFseqTrimParallel.sh		# Samples will be trimmed in parallel (up to 8 simultaneously)
 
-### After AMFseqTrimParallel.sh is done running: 
+### After AMFseqTrimParallel.sh is done running:
 
-# 1. Fire up fastQC:
-module load gcc/8.2.0 fastqc/0.11.9
+# 1. Create qza object of trimmed reads
+qiime tools import \
+  --type 'SampleData[PairedEndSequencesWithQuality]' \
+  --input-path trimmed \
+  --input-format CasavaOneEightSingleLanePerSampleDirFmt \
+  --output-path trimmed-paired-end.qza
 
-# 2. Generate fastQC summaries for R1 and R2:
+# 2. Generate summaries for R1 and R2:
+qiime demux summarize \
+  --i-data trimmed-paired-end.qza \
+  --o-visualization trimmed-paired-end.qzv
 
-zcat ./trimmed/*R1_trimmed.fastq.gz | fastqc -o ./fastQCoutput stdin:R1 
-zcat ./trimmed/*R2_trimmed.fastq.gz | fastqc -o ./fastQCoutput stdin:R2
+# 3. Download  outputs (./trimmed-paired-end.qzv)
 
-# 3. Download fastqc outputs (./fastQCoutput/*.html)
-# 4. View on web browser: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+# 4. View trimmed-paired-end.qzv either on https://view.qiime2.org/ 
+#    or using a local install of qiime2 and the command 
+#    "qiime tools view trimmed-paired-end.qzv"
+
 # 5. Choose truncation lengths for R1 and for R2 -- 
 #    where does sequence quality start to drop off?
 #    Specify your cutoffs in the next sbatch command (below)
@@ -140,9 +179,9 @@ zcat ./trimmed/*R2_trimmed.fastq.gz | fastqc -o ./fastQCoutput stdin:R2
 ### Specify truncation lengths for R1 and R2:
 # These (110 and 105) are default values; you should change them
 # Also change the working directory to current directory
-# to fit your dataset (based on FastQC results)
+# to fit your dataset
 
-sbatch --export=R1cutoff=150,R2cutoff=110 AMFtrimmedToASVs.sh $(cd -P -- "$(dirname -- "$0")" && pwd -P)
+sbatch --export=R1cutoff=150,R2cutoff=110,CONDA_PIPELINE_ENV AMFtrimmedToASVs.sh $(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
 # ^ this bash script will do everything from dada2 pipeline (make ASV table) to 
 # clustering ASVs into 97% OTUs, to
@@ -156,7 +195,7 @@ sbatch --export=R1cutoff=150,R2cutoff=110 AMFtrimmedToASVs.sh $(cd -P -- "$(dirn
 
 # This script will align R1 and R2 reads with the reference database and then concatenate resulting alignments
 
-sbatch --export=R1cutoff=150,R2cutoff=110 AMFalignseqs.sh $(cd -P -- "$(dirname -- "$0")" && pwd -P)
+sbatch --export=R1cutoff=150,R2cutoff=110,CONDA_PIPELINE_ENV AMFalignseqs.sh $(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
 ###################################
 ####### Place OTU sequences #######
@@ -167,9 +206,9 @@ sbatch --export=R1cutoff=150,R2cutoff=110 AMFalignseqs.sh $(cd -P -- "$(dirname 
 # This script will determine how many OTUs need to be placed, and launch a batch
 # script with an appropriate number of tasks to be processed in parallel.
 
-bash AMFlaunchTrees.sh
+bash --export=CONDA_PIPELINE_ENV AMFlaunchTrees.sh
 
-#Check that all trees finished
+# Check that all trees finished
 
 cd slurmOutputs/
 find . -name "buildTree*.out" | xargs grep -E 'DUE TO TIME LIMIT'
@@ -188,8 +227,6 @@ find . -name "buildTree*.out" | xargs grep -E 'DUE TO TIME LIMIT'
 # run this R script to determine which OTUs fall within the
 # AMF clade, and make subsets of the rep-seqs and OTU table
 # for AMF-OTUs and non-AMF-OTUs
-
-module load gcc/8.2.0 r/4.2.2
 
 Rscript AMFcladeExtract.R
 

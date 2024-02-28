@@ -29,4 +29,4 @@ fi
 
 echo "Launching RAXML tree building in parallel for "$nSubsets" subsets of OTU sequences..."
 
-sbatch --array=1-$nSubsets AMFbuildTree.sh
+sbatch --export=CONDA_PIPELINE_ENV --array=1-$nSubsets AMFbuildTree.sh
