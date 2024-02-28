@@ -4,7 +4,7 @@ library(Biostrings)
 library(stringr)
 
 #read in fasta and format seqs based on study cutoffs
-SeqstoAlign <- readDNAStringSet('BLAST_otu97plusV15_3.23.21_cut.fasta')
+SeqstoAlign <- readDNAStringSet('BLAST_otu97plusv16_2024_cut.fasta')
 SeqstoAlign <- as.vector(SeqstoAlign)
 
 #extract forward and reverse reads, then join
@@ -16,10 +16,10 @@ reverseread<-str_sub(SeqstoAlign,-rtrunc)
 forwardread<-DNAStringSet(forwardread) #turn into DNAString
 names(forwardread)<-names #add names back in
 str(forwardread) #check looks ok
-writeXStringSet(forwardread, "R1.BLAST_otu97plusV15_3.23.21_cut.fasta",width=10000) #write out.
+writeXStringSet(forwardread, "R1.BLAST_otu97plusv16_2024_cut.fasta",width=10000) #write out.
 
 # write out R2
 reverseread<-DNAStringSet(reverseread) #turn into DNAString
 names(reverseread)<-names #add names back in
 str(reverseread) #check looks ok
-writeXStringSet(reverseread, "R2.BLAST_otu97plusV15_3.23.21_cut.fasta",width=10000) #write out.
+writeXStringSet(reverseread, "R2.BLAST_otu97plusv16_2024_cut.fasta",width=10000) #write out.

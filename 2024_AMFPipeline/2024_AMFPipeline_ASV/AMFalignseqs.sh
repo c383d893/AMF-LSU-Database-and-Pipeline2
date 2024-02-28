@@ -21,7 +21,7 @@ rm AMFcutLSUdbwithCutoffs.R
 
 # join cut LSU DB and study seqs
 
-cat V15_LSUDB_3.23.21_cut.fasta ASVrepseqs_clean_BLAST.fasta > BLAST_ASVplusV15_3.23.21_cut.fasta
+cat v16_LSUDB_2024_cut.fasta ASVrepseqs_clean_BLAST.fasta > BLAST_ASVplusv16_2024_cut.fasta
 
 # Replace placeholder text in R script with user-provided truncation lengths for R1 and R2
 cat AMFalignseqs.R | sed "s/ftrunc/$R1cutoff/" | sed "s/rtrunc/$R2cutoff/" > AMFalignseqswithCutoffs.R
@@ -43,14 +43,14 @@ conda activate /cluster/project/crowther/miniconda3/envs/microbio
 export TMPDIR=$SCRIPT_DIR/tmp/
 
 # R1
-qiime tools import --input-path R1.BLAST_ASVplusV15_3.23.21_cut.fasta --output-path R1.BLAST_ASVplusV15_3.23.21_cut --type 'FeatureData[Sequence]'
-qiime alignment mafft --i-sequences R1.BLAST_ASVplusV15_3.23.21_cut.qza --o-alignment aligned_R1.BLAST_ASVplusV15_3.23.21_cut.qza
-qiime tools export --input-path aligned_R1.BLAST_ASVplusV15_3.23.21_cut.qza --output-path R1.BLAST_ASVplusV15_3.23.21_cut_out
+qiime tools import --input-path R1.BLAST_ASVplusv16_2024_cut.fasta --output-path R1.BLAST_ASVplusv16_2024_cut --type 'FeatureData[Sequence]'
+qiime alignment mafft --i-sequences R1.BLAST_ASVplusv16_2024_cut.qza --o-alignment aligned_R1.BLAST_ASVplusv16_2024_cut.qza
+qiime tools export --input-path aligned_R1.BLAST_ASVplusv16_2024_cut.qza --output-path R1.BLAST_ASVplusv16_2024_cut_out
 
 # R2
-qiime tools import --input-path R2.BLAST_ASVplusV15_3.23.21_cut.fasta --output-path R2.BLAST_ASVplusV15_3.23.21_cut --type 'FeatureData[Sequence]'
-qiime alignment mafft --i-sequences R2.BLAST_ASVplusV15_3.23.21_cut.qza --o-alignment aligned_R2.BLAST_ASVplusV15_3.23.21_cut.qza
-qiime tools export --input-path aligned_R2.BLAST_ASVplusV15_3.23.21_cut.qza --output-path R2.BLAST_ASVplusV15_3.23.21_cut_out
+qiime tools import --input-path R2.BLAST_ASVplusv16_2024_cut.fasta --output-path R2.BLAST_ASVplusv16_2024_cut --type 'FeatureData[Sequence]'
+qiime alignment mafft --i-sequences R2.BLAST_ASVplusv16_2024_cut.qza --o-alignment aligned_R2.BLAST_ASVplusv16_2024_cut.qza
+qiime tools export --input-path aligned_R2.BLAST_ASVplusv16_2024_cut.qza --output-path R2.BLAST_ASVplusv16_2024_cut_out
 echo;echo “Split R1-R2 alignment complete”
 
 ### Deactivate conda 
@@ -65,15 +65,15 @@ Rscript AMFconcatseqs.R
 echo;echo “Concatenate R1-R2 pipeline complete”
 
 # remove once no longer needed:
-rm R1.BLAST_ASVplusV15_3.23.21_cut.fasta
-rm R1.BLAST_ASVplusV15_3.23.21_cut_out
-rm R1.BLAST_ASVplusV15_3.23.21_cut.qza
-rm R2.BLAST_ASVplusV15_3.23.21_cut.fasta
-rm R2.BLAST_ASVplusV15_3.23.21_cut_out
-rm R2.BLAST_ASVplusV15_3.23.21_cut.qza
-rm aligned_R1.BLAST_ASVplusV15_3.23.21_cut.qza
-rm aligned_R2.BLAST_ASVplusV15_3.23.21_cut.qza
-rm R1.BLAST_ASVplusV15_3.23.21_cut_out
-rm R2.BLAST_ASVplusV15_3.23.21_cut_out
+rm R1.BLAST_ASVplusv16_2024_cut.fasta
+rm R1.BLAST_ASVplusv16_2024_cut_out
+rm R1.BLAST_ASVplusv16_2024_cut.qza
+rm R2.BLAST_ASVplusv16_2024_cut.fasta
+rm R2.BLAST_ASVplusv16_2024_cut_out
+rm R2.BLAST_ASVplusv16_2024_cut.qza
+rm aligned_R1.BLAST_ASVplusv16_2024_cut.qza
+rm aligned_R2.BLAST_ASVplusv16_2024_cut.qza
+rm R1.BLAST_ASVplusv16_2024_cut_out
+rm R2.BLAST_ASVplusv16_2024_cut_out
 
 rm -r tmp/
