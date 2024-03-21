@@ -21,17 +21,17 @@ list.files(filtpath) # Should be empty at beginning of script
 # This creates a list of file paths for the primer-trimmed input files
 # It assumes forward and reverse fastq filenames have format:
 # SAMPLENAME_R1_001.fastq.gz and SAMPLENAME_R2_001.fastq.gz
-fastqFs.trimmed <- sort(list.files(trimpath, pattern="_R1_trimmed.fastq.gz", full.names = TRUE)) # get forward reads (R1)
-fastqRs.trimmed <- sort(list.files(trimpath, pattern="_R2_trimmed.fastq.gz", full.names = TRUE)) # get reverse reads (R2)
+fastqFs.trimmed <- sort(list.files(trimpath, pattern="_R1_001.fastq.gz", full.names = TRUE)) # get forward reads (R1)
+fastqRs.trimmed <- sort(list.files(trimpath, pattern="_R2_001.fastq.gz", full.names = TRUE)) # get reverse reads (R2)
 if(length(fastqFs.trimmed) != length(fastqRs.trimmed)) stop("Forward and reverse files do not match.")
 
 # Rewrite file names for filtered reads:
-# It replaces 'trimmed' with 'filtered' both in the file name, and in the full path (subdirectory name)
+# It replaces 'trimmed' with 'filtered' in the full path (subdirectory name)
 fastqFs.filtered <- str_replace_all(fastqFs.trimmed,'trimmed','filtered')
 fastqRs.filtered <- str_replace_all(fastqRs.trimmed,'trimmed','filtered')
 
 # Extract simplified sample names
-sample.names <- str_remove_all(basename(fastqFs.filtered),'_R1_filtered.fastq.gz')
+sample.names <- str_remove_all(basename(fastqFs.filtered),'_R1_001.fastq.gz')
 names(fastqFs.filtered) <- sample.names
 names(fastqRs.filtered) <- sample.names
 print('Sample names are:\n')

@@ -4,6 +4,11 @@
 #SBATCH --output=./slurmOutputs/seqTrim.%a.out
 #SBATCH --error=./slurmOutputs/seqTrim.%a.out
 #SBATCH --job-name=trimseqs
+#SBATCH --partition=sixhour
+
+### Activate conda
+. ~/.bashrc
+conda activate $C_ENV
 
 # Script to trim primer sequences
 # Assumes we are in the working directory
@@ -18,9 +23,6 @@ REV=`echo $FWD | sed 's/_R1_/_R2_/'` # get paired reverse read
 # Extract sample name from the full input filename:
 SAMPLE=$(echo ${FWD} | sed "s/_R1_\001\.fastq.gz*//")
 
-# Fire up cutadapt
-module load gcc/8.2.0 python/3.11.2
-
 # Trim primers
 ### Forward primer = LROR = ACCCGCTGAACTTAAGC
 ### Reverse primer = FLR2 = TCGTTTAAAGCCATTACGTC
@@ -28,4 +30,7 @@ module load gcc/8.2.0 python/3.11.2
 ### Output goes into ./trimmed/ subdirectory
 ### Reads with no primer matches get discarded
 
-cutadapt -g ACCCGCTGAACTTAAGC -G TCGTTTAAAGCCATTACGTC --discard-untrimmed --output=./trimmed/${SAMPLE}_R1_trimmed.fastq.gz --paired-output=./trimmed/${SAMPLE}_R2_trimmed.fastq.gz ./raw/$FWD ./raw/$REV
+cutadapt -g ACCCGCTGAACTTAAGC -G TCGTTTAAAGCCATTACGTC --discard-untrimmed \
+    --output=./trimmed/${SAMPLE}_R1_001.fastq.gz \
+    --paired-output=./trimmed/${SAMPLE}_R2_001.fastq.gz \
+    ./raw/$FWD ./raw/$REV
