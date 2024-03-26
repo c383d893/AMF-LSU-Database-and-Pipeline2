@@ -62,7 +62,6 @@ echo "STOP=$STOP"
 
 
 export TMPDIR=$SCRIPT_DIR/tmp/
-mkdir $TMPDIR
 
 # Make temporary files to store subsets + intermediate files
 TMP_SPLIT_SEQ=$(mktemp -p $TMPDIR)

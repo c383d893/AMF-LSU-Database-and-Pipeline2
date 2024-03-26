@@ -40,4 +40,8 @@ fi
 
 echo "Launching RAXML tree building in parallel for "$nSubsets" subsets of ASV sequences..."
 
+mkdir $2/tmp
+
 sbatch --export=C_ENV=$1,SCRIPT_DIR=$2 --array=1-$nSubsets AMFbuildTree.sh
+
+rm -r $2/tmp

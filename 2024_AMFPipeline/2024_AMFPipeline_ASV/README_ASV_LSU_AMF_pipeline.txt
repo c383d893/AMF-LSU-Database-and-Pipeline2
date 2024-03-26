@@ -185,7 +185,7 @@ sbatch --export=C_ENV=$C_ENV AMFvisualizeRaw.sh
 #    IMPORTANT: update this to specify your number of samples: count: ls | wc -l
 #    i.e. --array=1-10%8 becomes --array=1-120%8 for 120 sampmles
 
-sbatch --array=1-520%8 --export=C_ENV=$C_ENV AMFseqTrimParallel.sh
+sbatch --array=1-10%8 --export=C_ENV=$C_ENV AMFseqTrimParallel.sh
 # Samples will be trimmed in parallel (up to 8 simultaneously)
 
 # 2. Visualization of trimmed sequence quality
@@ -213,7 +213,7 @@ sbatch --export=C_ENV=$C_ENV AMFvisualizeTrimmed.sh
 #    Also change the working directory to current directory
 #    to fit your dataset
 
-sbatch --export=R1cutoff=217,R2cutoff=165,C_ENV=$C_ENV \
+sbatch --export=R1cutoff=110,R2cutoff=105,C_ENV=$C_ENV \
     AMFtrimmedToASVs.sh \
     $(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
@@ -231,7 +231,7 @@ sbatch --export=R1cutoff=217,R2cutoff=165,C_ENV=$C_ENV \
 # 1. This script will align R1 and R2 reads with the reference database and
 #    then concatenate resulting alignments
 
-sbatch --export=R1cutoff=217,R2cutoff=165,C_ENV=$C_ENV \
+sbatch --export=R1cutoff=110,R2cutoff=105,C_ENV=$C_ENV \
     AMFalignseqs.sh \
     $(readlink -f $(dirname AMFalignseqs.sh))
 
