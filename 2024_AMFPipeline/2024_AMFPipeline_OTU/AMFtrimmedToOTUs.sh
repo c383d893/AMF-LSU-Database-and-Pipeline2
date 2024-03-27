@@ -8,12 +8,8 @@
 #SBATCH --job-name=trm2asv
 
 ### Activate conda 
-shift
 . ~/.bashrc
-conda activate ${CONDA_PIPELINE_ENV}
-
-# Get the working directory 
-SCRIPT_DIR=$1
+conda activate $C_ENV
 
 # Replace placeholder text in R script with user-provided truncation lengths for R1 and R2: DADA2
 cat AMFdada2.R | sed "s/R1trunclen.value/$R1cutoff/" | sed "s/R2trunclen.value/$R2cutoff/" > AMFdada2withCutoffs.R
@@ -24,11 +20,8 @@ Rscript AMFdada2withCutoffs.R
 echo;echo "DADA2 pipeline complete. Converting output files to Qiime format..."
 rm AMFdada2withCutoffs.R # remove temporary script once it's done running
 
-
-
 # Define a temporary folder 
-mkdir $SCRIPT_DIR/tmp/
-export TMPDIR=$SCRIPT_DIR/tmp/
+export TMPDIR=./tmp/
 
 # Convert ASV table from .tsv format to .biom format
 biom convert -i ./dada2output/ASVtable.tsv -o ./q2files/ASVtable.biom --to-json --table-type="OTU table"
@@ -39,7 +32,7 @@ qiime tools import --input-path ./q2files/ASVtable.biom --type 'FeatureTable[Fre
 qiime tools import --input-path ./dada2output/ASVs.fasta --type 'FeatureData[Sequence]' --output-path ./q2files/ASVseqs.qza
 
 # Convert reference database from .fasta to .qza
-qiime tools import --input-path ./v16_LSUDB_2024.fasta --type 'FeatureData[Sequence]' --output-path ./q2files/AMFreferenceSeqs.qza
+qiime tools import --input-path ./V16_LSUDB_2024.fasta --type 'FeatureData[Sequence]' --output-path ./q2files/AMFreferenceSeqs.qza
 echo; echo "ASV table, ASV sequences, and reference sequences have been converted to .qza"
 
 # OTU clustering
@@ -85,13 +78,13 @@ echo;echo “split R1-R2 pipeline complete”
 rm AMFsplitR1R2withCutoffs.R # remove temporary script once it's done running
 
 #Make BLAST reference database
-makeblastdb -in v16_LSUDB_2024_AMFONLY.fasta -input_type fasta -dbtype nucl -out v16_LSUDB_2024_AMFONLY
+makeblastdb -in V16_LSUDB_2024_AMFONLY.fasta -input_type fasta -dbtype nucl -out V16_LSUDB_2024_AMFONLY
 
 #Blast R1, extract top hit based on bit score, extract col 1, replace header with feature-id
-blastn -db v16_LSUDB_2024_AMFONLY -query R1.otu97repseqs_clean.fasta -outfmt 6 | sort -k1,1 -k12,12nr -k11,11n | sort -u -k1,1 --merge | cut -f1 > S.BLAST.R1.otu97repseqs_clean.txt 
+blastn -db V16_LSUDB_2024_AMFONLY -query R1.otu97repseqs_clean.fasta -outfmt 6 | sort -k1,1 -k12,12nr -k11,11n | sort -u -k1,1 --merge | cut -f1 > S.BLAST.R1.otu97repseqs_clean.txt 
 
 #Blast R2, extract top hit based on bit score, extract col 1, replace header with feature-id
-blastn -db v16_LSUDB_2024_AMFONLY -query R2.otu97repseqs_clean.fasta -outfmt 6 | sort -k1,1 -k12,12nr -k11,11n | sort -u -k1,1 --merge | cut -f1 > S.BLAST.R2.otu97repseqs_clean.txt
+blastn -db V16_LSUDB_2024_AMFONLY -query R2.otu97repseqs_clean.fasta -outfmt 6 | sort -k1,1 -k12,12nr -k11,11n | sort -u -k1,1 --merge | cut -f1 > S.BLAST.R2.otu97repseqs_clean.txt
 
 # Join files, get unique OTU and add header
 cat S.BLAST.R1.otu97repseqs_clean.txt S.BLAST.R2.otu97repseqs_clean.txt |sort| uniq | sed -e '1i\otus' > BLAST.R1_R2.otu97repseqs_clean_cut.tsv

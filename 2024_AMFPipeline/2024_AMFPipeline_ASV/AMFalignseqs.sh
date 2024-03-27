@@ -5,7 +5,6 @@
 #SBATCH --output=./slurmOutputs/Alignseqs
 #SBATCH --error=./slurmOutputs/Alignseqs
 #SBATCH --job-name=Alignseqs
-#SBATCH --partition=sixhour
 
 # Get the working directory 
 SCRIPT_DIR=$1
@@ -56,13 +55,13 @@ Rscript AMFconcatseqs.R
 echo;echo “Concatenate R1-R2 pipeline complete”
 
 # remove once no longer needed:
-# rm R1.BLAST_ASVplusV16_2024_cut.fasta
-# rm R1.BLAST_ASVplusV16_2024_cut.qza
-# rm -r R1.BLAST_ASVplusV16_2024_cut_out
-# rm R2.BLAST_ASVplusV16_2024_cut.fasta
-# rm R2.BLAST_ASVplusV16_2024_cut.qza
-# rm -r R2.BLAST_ASVplusV16_2024_cut_out
-# rm aligned_R1.BLAST_ASVplusV16_2024_cut.qza
-# rm aligned_R2.BLAST_ASVplusV16_2024_cut.qza
+rm R1.BLAST_ASVplusV16_2024_cut.fasta
+rm R1.BLAST_ASVplusV16_2024_cut.qza
+rm -r R1.BLAST_ASVplusV16_2024_cut_out
+rm R2.BLAST_ASVplusV16_2024_cut.fasta
+rm R2.BLAST_ASVplusV16_2024_cut.qza
+rm -r R2.BLAST_ASVplusV16_2024_cut_out
+rm aligned_R1.BLAST_ASVplusV16_2024_cut.qza
+rm aligned_R2.BLAST_ASVplusV16_2024_cut.qza
 
-# rm -r $TMPDIR
+rm -r $TMPDIR

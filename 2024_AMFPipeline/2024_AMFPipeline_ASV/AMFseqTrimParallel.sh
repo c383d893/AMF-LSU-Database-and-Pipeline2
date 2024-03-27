@@ -4,7 +4,6 @@
 #SBATCH --output=./slurmOutputs/seqTrim.%a.out
 #SBATCH --error=./slurmOutputs/seqTrim.%a.out
 #SBATCH --job-name=trimseqs
-#SBATCH --partition=sixhour
 
 ### Activate conda
 . ~/.bashrc

@@ -2,12 +2,11 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=16
 #SBATCH --mem-per-cpu=8gb
-#SBATCH --time=06-00:00:00
+#SBATCH --time=00-24:00:00
 #SBATCH --output=./slurmOutputs/buildTree.%a.out
 #SBATCH --error=./slurmOutputs/buildTree.%a.out
 #SBATCH --job-name=AMFbuildTree
 #SBATCH --array=1-11
-#SBATCH --partition=kbs
 
 ### Activate conda 
 . ~/.bashrc
@@ -60,7 +59,6 @@ echo "debug6"
 echo "START=$START"
 echo "STOP=$STOP"
 
-
 export TMPDIR=$SCRIPT_DIR/tmp/
 
 # Make temporary files to store subsets + intermediate files
@@ -101,12 +99,6 @@ raxmlHPC-PTHREADS-AVX2 -f d -m GTRGAMMA -p 1723 -N 100 \
     -s $TMP_SEQ -n ${SLURM_ARRAY_TASK_ID}_AMFtree.ENVbackbone \
     -T 16 -w $RAxMLoutpath
 
-# RAxMLoutpath=/home/r816r498/work/maps_2018-2021/RAxMLfiles/
-# TMP_SEQ=/home/r816r498/work/maps_2018-2021/tmp/tmp.zailFe0HtI
-# raxmlHPC-PTHREADS-AVX2 -f d -m GTRGAMMA -p 1723 -N 100 \
-#     -r Root_V16_LSUDB-1000BS-GTRGAMMA-bootstrap-tree.newick \
-#     -s $TMP_SEQ -n test_AMFtree.ENVbackbone \
-#     -T 16 -w $RAxMLoutpath
 # Clean Up
 rm -v $TMP_SEQ $TMP_QZA $TMP_QZA_ALIGNED
 mv RAxML_* ./RAxMLfiles/

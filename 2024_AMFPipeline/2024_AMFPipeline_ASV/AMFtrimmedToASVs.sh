@@ -2,11 +2,10 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=16
 #SBATCH --mem-per-cpu=4gb
-#SBATCH --time=00-6:00:00
+#SBATCH --time=00-24:00:00
 #SBATCH --output=./slurmOutputs/AMFtrimmedToASVs.out
 #SBATCH --error=./slurmOutputs/AMFtrimmedToASVs.out
 #SBATCH --job-name=trm2asv
-#SBATCH --partition=sixhour
 
 ### Activate conda
 . ~/.bashrc
