@@ -162,6 +162,10 @@ conda env create -n "amf_pipeline" --file "amf_pipeline_requirements.yml"
 # 1. Set name/location of conda environment
 C_ENV="amf_pipeline"
 
+# 2. You may need to set a default partition if your cluster
+#    does not specify one
+# export SBATCH_PARTITION=sixhour
+
 #########################################
 ####### View quality of raw data ########
 #########################################
