@@ -219,7 +219,7 @@ sbatch --export=C_ENV=$C_ENV AMFvisualizeTrimmed.sh
 
 sbatch --export=R1cutoff=110,R2cutoff=105,C_ENV=$C_ENV \
     AMFtrimmedToASVs.sh \
-    $(cd -P -- "$(dirname -- "$0")" && pwd -P)
+    $(readlink -f $(dirname AMFtrimmedToASVs.sh))
 
 # ^ this bash script will do everything from dada2 pipeline (make ASV table) to 
 # Determining ASVS, to

@@ -218,8 +218,8 @@ sbatch --export=C_ENV=$C_ENV AMFvisualizeTrimmed.sh
 #    to fit your dataset
 
 sbatch --export=R1cutoff=110,R2cutoff=105,C_ENV=$C_ENV \
-    AMFtrimmedToASVs.sh \
-    $(cd -P -- "$(dirname -- "$0")" && pwd -P)
+    AMFtrimmedToOTUs.sh \
+    $(readlink -f $(dirname AMFtrimmedToOTUs.sh))
 
 # ^ this bash script will do everything from dada2 pipeline (make ASV table) to 
 # clustering ASVs into 97% OTUs, to
