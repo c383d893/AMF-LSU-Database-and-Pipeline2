@@ -5,13 +5,13 @@
 
 # extract top library database seqs
 
-awk '/>ASV/{exit} 1' ./aligned_BLAST_ASVplusV16_2024_cut.fasta > \
+awk '/>OTU/{exit} 1' ./aligned_BLAST_otu97plusV16_2024_cut.fasta > \
     ./V16_LSUDB_2024_cut_aligned.fasta
 
 #extract study sequences
 
-awk '/>ASV/,0' ./aligned_BLAST_ASVplusV16_2024_cut.fasta > \
-    ./BLAST_ASVrepseqs_clean_aligned.fasta
+awk '/>OTU/,0' ./aligned_BLAST_otu97plusV16_2024_cut.fasta > \
+    ./BLAST_otu97repseqs_clean_aligned.fasta
 
 # divide the input fasta into subsets with this number of sequences ?
 nSeqsPerSubset=15 
@@ -43,5 +43,3 @@ echo "Launching RAXML tree building in parallel for "$nSubsets" subsets of OTU s
 mkdir $2/tmp
 
 sbatch --export=C_ENV=$1,SCRIPT_DIR=$2 --array=1-$nSubsets AMFbuildTree.sh
-
-rm -r $2/tmp

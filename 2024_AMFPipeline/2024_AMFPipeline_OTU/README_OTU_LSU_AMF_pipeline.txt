@@ -250,7 +250,7 @@ sbatch --export=R1cutoff=110,R2cutoff=105,C_ENV=$C_ENV \
 
 bash AMFlaunchTrees.sh \
     $C_ENV \
-    $(readlink -f $(dirname AMFalignseqs.sh))
+    $(readlink -f $(dirname AMFlaunchTrees.sh))
 
 # 2. Check that all trees finished
 
