@@ -7,11 +7,9 @@
 #SBATCH --error=./slurmOutputs/AMFtrimmedToASVs.out
 #SBATCH --job-name=trm2asv
 
-module load gcc/8.2.0 r/4.2.2
-module load gcc/8.2.0 blast-plus/2.12.0
-
-# Get the working directory 
-SCRIPT_DIR=$1
+### Activate conda
+. ~/.bashrc
+conda activate $C_ENV
 
 # Replace placeholder text in R script with user-provided truncation lengths for R1 and R2: DADA2
 cat AMFdada2.R | sed "s/R1trunclen.value/$R1cutoff/" | sed "s/R2trunclen.value/$R2cutoff/" > AMFdada2withCutoffs.R
@@ -22,14 +20,8 @@ Rscript AMFdada2withCutoffs.R
 echo;echo "DADA2 pipeline complete. Converting output files to Qiime format..."
 rm AMFdada2withCutoffs.R # remove temporary script once it's done running
 
-### Activate conda 
-shift
-. ~/.bashrc
-conda activate /cluster/project/crowther/miniconda3/envs/microbio
-
 # Define a temporary folder 
-mkdir $SCRIPT_DIR/tmp/
-export TMPDIR=$SCRIPT_DIR/tmp/
+export TMPDIR=./tmp/
 
 # Convert ASV table from .tsv format to .biom format
 biom convert -i ./dada2output/ASVtable.tsv -o ./q2files/ASVtable.biom --to-json --table-type="OTU table"
@@ -40,7 +32,7 @@ qiime tools import --input-path ./q2files/ASVtable.biom --type 'FeatureTable[Fre
 qiime tools import --input-path ./dada2output/ASVs.fasta --type 'FeatureData[Sequence]' --output-path ./q2files/ASVseqs.qza
 
 # Convert reference database from .fasta to .qza
-qiime tools import --input-path ./v16_LSUDB_2024.fasta --type 'FeatureData[Sequence]' --output-path ./q2files/AMFreferenceSeqs.qza
+qiime tools import --input-path ./V16_LSUDB_2024.fasta --type 'FeatureData[Sequence]' --output-path ./q2files/AMFreferenceSeqs.qza
 echo; echo "ASV table, ASV sequences, and reference sequences have been converted to .qza"
 
 # Additional chimera removal
@@ -71,12 +63,6 @@ biom convert -i ./q2files/feature-table.biom -o ./q2files/feature-table.tsv --to
 cat ./q2files/feature-table.tsv | sed 's/OTU/ASV/g' > ./ASVtable_clean.tsv # rename file, any perfect matched to database append OTU and move to working directory                                              
 echo;echo "export of sequences and ASV table complete"
 
-### Deactivate conda 
-conda deactivate
-
-# Load the modules again 
-module load gcc/8.2.0 r/4.2.2
-module load gcc/8.2.0 blast-plus/2.12.0
 
 # BLAST selection for tree building
 # Replace placeholder text in R script with user-provided truncation lengths for R1 and R2: SplitR1R2
@@ -88,13 +74,13 @@ echo;echo “split R1-R2 pipeline complete”
 rm AMFsplitR1R2withCutoffs.R # remove temporary script once it's done running
 
 #Make BLAST reference database
-makeblastdb -in v16_LSUDB_2024_AMFONLY.fasta -input_type fasta -dbtype nucl -out v16_LSUDB_2024_AMFONLY
+makeblastdb -in V16_LSUDB_2024_AMFONLY.fasta -input_type fasta -dbtype nucl -out V16_LSUDB_2024_AMFONLY
 
 #Blast R1, extract top hit based on bit score, extract col 1, replace header with feature-id
-blastn -db v16_LSUDB_2024_AMFONLY -query R1.ASVrepseqs_clean.fasta -outfmt 6 | sort -k1,1 -k12,12nr -k11,11n | sort -u -k1,1 --merge | cut -f1 > S.BLAST.R1.ASVrepseqs_clean.txt 
+blastn -db V16_LSUDB_2024_AMFONLY -query R1.ASVrepseqs_clean.fasta -outfmt 6 | sort -k1,1 -k12,12nr -k11,11n | sort -u -k1,1 --merge | cut -f1 > S.BLAST.R1.ASVrepseqs_clean.txt 
 
 #Blast R2, extract top hit based on bit score, extract col 1, replace header with feature-id
-blastn -db v16_LSUDB_2024_AMFONLY -query R2.ASVrepseqs_clean.fasta -outfmt 6 | sort -k1,1 -k12,12nr -k11,11n | sort -u -k1,1 --merge | cut -f1 > S.BLAST.R2.ASVrepseqs_clean.txt
+blastn -db V16_LSUDB_2024_AMFONLY -query R2.ASVrepseqs_clean.fasta -outfmt 6 | sort -k1,1 -k12,12nr -k11,11n | sort -u -k1,1 --merge | cut -f1 > S.BLAST.R2.ASVrepseqs_clean.txt
 
 # Join files, get unique OTU and add header
 cat S.BLAST.R1.ASVrepseqs_clean.txt S.BLAST.R2.ASVrepseqs_clean.txt |sort| uniq | sed -e '1i\asvs' > BLAST.R1_R2.ASVrepseqs_clean_cut.tsv
@@ -109,7 +95,7 @@ rm S.BLAST.R2.ASVrepseqs_clean.txt
 rm BLAST.R1_R2.ASVrepseqs_clean_cut.tsv 
 rm R1.ASVrepseqs_clean.fasta 
 rm R2.ASVrepseqs_clean.fasta 
-rm -r $SCRIPT_DIR/tmp/
+rm -r ./tmp/
 
 echo;echo "Sequences and OTU table subset to BLAST positive OTUs"
 

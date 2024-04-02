@@ -4,7 +4,7 @@ library(Biostrings)
 library(stringr)
 
 #read in database and format seqs based on study cutoffs
-LSUdb <- readDNAStringSet('v16_LSUDB_2024.fasta')
+LSUdb <- readDNAStringSet('V16_LSUDB_2024.fasta')
 LSUdb <- as.vector(LSUdb)
 
 #extract forward and reverse reads, then join
@@ -17,4 +17,4 @@ new.LSUdb<-DNAStringSet(new.LSUdb) #turn into DNAString
 names(new.LSUdb)<-names #add names back in
 str(new.LSUdb) #check looks ok
 
-writeXStringSet(new.LSUdb, "v16_LSUDB_2024_cut.fasta",width=10000) #write out.
+writeXStringSet(new.LSUdb, "V16_LSUDB_2024_cut.fasta",width=10000) #write out.
