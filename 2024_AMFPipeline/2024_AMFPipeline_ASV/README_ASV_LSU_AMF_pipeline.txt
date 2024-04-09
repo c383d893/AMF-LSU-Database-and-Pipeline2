@@ -171,7 +171,9 @@ C_ENV="amf_pipeline"
 #########################################
 
 # 1. Vizialize raw reads
-sbatch --export=C_ENV=$C_ENV AMFvisualizeRaw.sh
+sbatch --export=C_ENV=$C_ENV \
+    AMFvisualizeRaw.sh \
+    $(readlink -f $(dirname AMFvisualizeRaw.sh))
 
 # 2. Download outputs (./visualize_raw.qzv)
 
@@ -194,7 +196,9 @@ sbatch --array=1-10%8 --export=C_ENV=$C_ENV AMFseqTrimParallel.sh
 
 # 2. Visualization of trimmed sequence quality
 #    After AMFseqTrimParallel.sh is done run:
-sbatch --export=C_ENV=$C_ENV AMFvisualizeTrimmed.sh
+sbatch --export=C_ENV=$C_ENV \
+    AMFvisualizeTrimmed.sh \
+    $(readlink -f $(dirname AMFvisualizeTrimmed.sh))
 
 # 3. Download outputs (./visualize_trimmed.qzv)
 

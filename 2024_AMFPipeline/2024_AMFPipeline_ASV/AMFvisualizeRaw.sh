@@ -7,9 +7,16 @@
 #SBATCH --error=./slurmOutputs/AMFvisualizeRaw.out
 #SBATCH --job-name=AMFvisualizeRaw
 
+# Get the working directory
+SCRIPT_DIR=$1
+
 ### Activate conda
 . ~/.bashrc
 conda activate $C_ENV
+
+# Define a temporary folder
+mkdir $SCRIPT_DIR/tmp/
+export TMPDIR=$SCRIPT_DIR/tmp/
 
 # 1.  Create qza object of raw reads
 qiime tools import \
@@ -22,3 +29,6 @@ qiime tools import \
 qiime demux summarize \
   --i-data ./q2files/raw_files.qza \
   --o-visualization ./visualize_raw.qzv
+
+# Delete temporary folder
+rm -r $SCRIPT_DIR/tmp/
