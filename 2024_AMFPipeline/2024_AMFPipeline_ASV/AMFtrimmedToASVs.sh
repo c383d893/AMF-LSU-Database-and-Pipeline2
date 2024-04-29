@@ -7,9 +7,16 @@
 #SBATCH --error=./slurmOutputs/AMFtrimmedToASVs.out
 #SBATCH --job-name=trm2asv
 
+# Get the working directory
+SCRIPT_DIR=$1
+
 ### Activate conda
 . ~/.bashrc
 conda activate $C_ENV
+
+# Define a temporary folder
+mkdir $SCRIPT_DIR/tmp/
+export TMPDIR=$SCRIPT_DIR/tmp/
 
 # Replace placeholder text in R script with user-provided truncation lengths for R1 and R2: DADA2
 cat AMFdada2.R | sed "s/R1trunclen.value/$R1cutoff/" | sed "s/R2trunclen.value/$R2cutoff/" > AMFdada2withCutoffs.R
@@ -19,9 +26,6 @@ echo;echo "Beginning DADA2 pipeline..."
 Rscript AMFdada2withCutoffs.R
 echo;echo "DADA2 pipeline complete. Converting output files to Qiime format..."
 rm AMFdada2withCutoffs.R # remove temporary script once it's done running
-
-# Define a temporary folder 
-export TMPDIR=./tmp/
 
 # Convert ASV table from .tsv format to .biom format
 biom convert -i ./dada2output/ASVtable.tsv -o ./q2files/ASVtable.biom --to-json --table-type="OTU table"
@@ -95,7 +99,7 @@ rm S.BLAST.R2.ASVrepseqs_clean.txt
 rm BLAST.R1_R2.ASVrepseqs_clean_cut.tsv 
 rm R1.ASVrepseqs_clean.fasta 
 rm R2.ASVrepseqs_clean.fasta 
-rm -r ./tmp/
+rm -r $SCRIPT_DIR/tmp/
 
 echo;echo "Sequences and OTU table subset to BLAST positive OTUs"
 

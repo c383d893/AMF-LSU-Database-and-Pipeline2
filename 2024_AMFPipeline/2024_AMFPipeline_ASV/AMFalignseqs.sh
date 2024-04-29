@@ -6,12 +6,16 @@
 #SBATCH --error=./slurmOutputs/Alignseqs
 #SBATCH --job-name=Alignseqs
 
-# Get the working directory 
+# Get the working directory
 SCRIPT_DIR=$1
 
-### Activate conda 
+### Activate conda
 . ~/.bashrc
 conda activate $C_ENV
+
+# Define a temporary folder
+mkdir $SCRIPT_DIR/tmp/
+export TMPDIR=$SCRIPT_DIR/tmp/
 
 # Replace placeholder text in R script with user-provided truncation lengths for R1 and R2
 cat AMFcutLSUdb.R | sed "s/ftrunc/$R1cutoff/" | sed "s/rtrunc/$R2cutoff/" > AMFcutLSUdbwithCutoffs.R
@@ -34,9 +38,6 @@ echo;echo “split R1-R2 pipeline complete”
 rm AMFalignseqswithCutoffs.R
 
 # Align R1 and R2 independently: import .fasta, align via mafft, export back to .fasta
-
-# Define a temporary folder 
-export TMPDIR=$SCRIPT_DIR/tmp/
 
 # R1
 qiime tools import --input-path R1.BLAST_ASVplusV16_2024_cut.fasta --output-path R1.BLAST_ASVplusV16_2024_cut --type 'FeatureData[Sequence]'
@@ -64,4 +65,5 @@ rm -r R2.BLAST_ASVplusV16_2024_cut_out
 rm aligned_R1.BLAST_ASVplusV16_2024_cut.qza
 rm aligned_R2.BLAST_ASVplusV16_2024_cut.qza
 
-rm -r $TMPDIR
+# Delete temporary folder
+rm -r $SCRIPT_DIR/tmp/
