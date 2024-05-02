@@ -10,7 +10,7 @@ awk '/>ASV/{exit} 1' ./aligned_BLAST_ASVplusV16_2024_cut.fasta > \
 
 #extract study sequences
 
-awk '/>ASV/,0' ./aligned_BLAST_ASVplusV16_2024_cut.fasta > \
+awk '/>ASV/,EOF' ./aligned_BLAST_ASVplusV16_2024_cut.fasta > \
     ./BLAST_ASVrepseqs_clean_aligned.fasta
 
 # divide the input fasta into subsets with this number of sequences ?
