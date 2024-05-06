@@ -10,7 +10,7 @@ awk '/>OTU/{exit} 1' ./aligned_BLAST_otu97plusV16_2024_cut.fasta > \
 
 #extract study sequences
 
-awk '/>OTU/,0' ./aligned_BLAST_otu97plusV16_2024_cut.fasta > \
+awk '/>OTU/,EOF' ./aligned_BLAST_otu97plusV16_2024_cut.fasta > \
     ./BLAST_otu97repseqs_clean_aligned.fasta
 
 # divide the input fasta into subsets with this number of sequences ?

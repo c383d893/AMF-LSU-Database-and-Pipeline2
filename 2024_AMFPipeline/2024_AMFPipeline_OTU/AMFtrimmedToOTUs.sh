@@ -5,7 +5,7 @@
 #SBATCH --time=00-24:00:00
 #SBATCH --output=./slurmOutputs/AMFtrimmedToASVs.out
 #SBATCH --error=./slurmOutputs/AMFtrimmedToASVs.out
-#SBATCH --job-name=trm2asv
+#SBATCH --job-name=trm2otu
 
 # Get the working directory
 SCRIPT_DIR=$1
