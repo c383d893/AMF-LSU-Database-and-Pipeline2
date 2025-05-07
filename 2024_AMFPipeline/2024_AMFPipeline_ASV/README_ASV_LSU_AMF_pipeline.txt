@@ -100,10 +100,10 @@ mkdir ./slurmOutputs
 ./raw/*R2_001.fastq.gz
 
 # Reference database:
-./V16_LSUDB_2024.fasta
+./V18_LSUDB_052025.fasta
 
 # AMF only reference database:
-./V16_LSUDB_2024_AMFONLY.fasta
+./V18_LSUDB_052025_AMFONLY.fasta
 
 # Bash scripts to run on SLURM
 ./AMFvisualizeRaw.sh
@@ -117,28 +117,37 @@ mkdir ./slurmOutputs
 # R scripts
 ./AMFdada2.R
 ./AMFcladeExtract.R
+./AMFcladesExtract.R
 ./AMFcladeExtract_family.R
+./AMFcladeTaxonomy.R
 ./AMFconcatseqs.R
 ./AMFalignseqs.R
 ./AMFcutLSUdb.R
 ./AMFextractBLAST.R
-./AMFsplitR1R2 
+./AMFsplitR1R2
 
-###########################################
-######### SET CONDA ENVIRONMENT ###########
-###########################################
+
+#########################################
+############# SET ENVIRONMENT ###########
+#########################################
+# IMPORTANT: run these commands each time you log in to the cluster
 
 # 1. Set name/location of conda environment
-#    IMPORTANT: run each time you log in to the cluster
 
 C_ENV="amf_pipeline"
+
+# 2. Some Slurm clusters do not set a default partitiion.
+#    In these cases you will need to specifiy your default
+#    partion with and enviornmental variable i.e.
+
+export SBATCH_PARTITION="sixhour"
 
 #########################################
 ########### VIZUALIZE RAW DATA ##########
 #########################################
 
 # 1. Vizualize raw reads
-    
+
 sbatch --export=C_ENV=$C_ENV \
     AMFvisualizeRaw.sh  \
     $(readlink -f $(dirname AMFvisualizeRaw.sh))
@@ -166,7 +175,7 @@ sbatch --export=C_ENV=$C_ENV \
 
 # 3. Download outputs (./visualize_trimmed.qzv)
 
-# 4. View visualize_trimmed.qzv on https://view.qiime2.org/ 
+# 4. View visualize_trimmed.qzv on https://view.qiime2.org/
 
 # 5. Choose truncation lengths for R1 and for R2 -- 
 #    where does sequence quality start to drop off?

@@ -36,7 +36,7 @@ qiime tools import --input-path ./q2files/ASVtable.biom --type 'FeatureTable[Fre
 qiime tools import --input-path ./dada2output/ASVs.fasta --type 'FeatureData[Sequence]' --output-path ./q2files/ASVseqs.qza
 
 # Convert reference database from .fasta to .qza
-qiime tools import --input-path ./V16_LSUDB_2024.fasta --type 'FeatureData[Sequence]' --output-path ./q2files/AMFreferenceSeqs.qza
+qiime tools import --input-path ./V18_LSUDB_052025.fasta --type 'FeatureData[Sequence]' --output-path ./q2files/AMFreferenceSeqs.qza
 echo; echo "ASV table, ASV sequences, and reference sequences have been converted to .qza"
 
 # Additional chimera removal
@@ -78,13 +78,13 @@ echo;echo “split R1-R2 pipeline complete”
 rm AMFsplitR1R2withCutoffs.R # remove temporary script once it's done running
 
 #Make BLAST reference database
-makeblastdb -in V16_LSUDB_2024_AMFONLY.fasta -input_type fasta -dbtype nucl -out V16_LSUDB_2024_AMFONLY
+makeblastdb -in V18_LSUDB_052025_AMFONLY.fasta -input_type fasta -dbtype nucl -out V18_LSUDB_052025_AMFONLY
 
 #Blast R1, extract top hit based on bit score, extract col 1, replace header with feature-id
-blastn -db V16_LSUDB_2024_AMFONLY -query R1.ASVrepseqs_clean.fasta -outfmt 6 | sort -k1,1 -k12,12nr -k11,11n | sort -u -k1,1 --merge | cut -f1 > S.BLAST.R1.ASVrepseqs_clean.txt 
+blastn -db V18_LSUDB_052025_AMFONLY -query R1.ASVrepseqs_clean.fasta -outfmt 6 | sort -k1,1 -k12,12nr -k11,11n | sort -u -k1,1 --merge | cut -f1 > S.BLAST.R1.ASVrepseqs_clean.txt 
 
 #Blast R2, extract top hit based on bit score, extract col 1, replace header with feature-id
-blastn -db V16_LSUDB_2024_AMFONLY -query R2.ASVrepseqs_clean.fasta -outfmt 6 | sort -k1,1 -k12,12nr -k11,11n | sort -u -k1,1 --merge | cut -f1 > S.BLAST.R2.ASVrepseqs_clean.txt
+blastn -db V18_LSUDB_052025_AMFONLY -query R2.ASVrepseqs_clean.fasta -outfmt 6 | sort -k1,1 -k12,12nr -k11,11n | sort -u -k1,1 --merge | cut -f1 > S.BLAST.R2.ASVrepseqs_clean.txt
 
 # Join files, get unique OTU and add header
 cat S.BLAST.R1.ASVrepseqs_clean.txt S.BLAST.R2.ASVrepseqs_clean.txt |sort| uniq | sed -e '1i\asvs' > BLAST.R1_R2.ASVrepseqs_clean_cut.tsv
@@ -101,6 +101,6 @@ rm R1.ASVrepseqs_clean.fasta
 rm R2.ASVrepseqs_clean.fasta 
 rm -r $SCRIPT_DIR/tmp/
 
-echo;echo "Sequences and OTU table subset to BLAST positive OTUs"
+echo;echo "Sequences and ASV table subset to BLAST positive ASVs"
 
-echo; echo "AMFtrimmedToOTUs.sh has completed running. Be sure to check the output file for error messages."
+echo; echo "AMFtrimmedToASV.sh has completed running. Be sure to check the output file for error messages."

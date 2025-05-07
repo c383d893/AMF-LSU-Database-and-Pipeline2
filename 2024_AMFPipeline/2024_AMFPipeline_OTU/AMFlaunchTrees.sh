@@ -5,12 +5,12 @@
 
 # extract top library database seqs
 
-awk '/>OTU/{exit} 1' ./aligned_BLAST_otu97plusV16_2024_cut.fasta > \
-    ./V16_LSUDB_2024_cut_aligned.fasta
+awk '/>OTU/{exit} 1' ./aligned_BLAST_otu97plusV18_052025_cut.fasta > \
+    ./V18_LSUDB_052025_cut_aligned.fasta
 
 #extract study sequences
 
-awk '/>OTU/,EOF' ./aligned_BLAST_otu97plusV16_2024_cut.fasta > \
+awk '/>OTU/,EOF' ./aligned_BLAST_otu97plusV18_052025_cut.fasta > \
     ./BLAST_otu97repseqs_clean_aligned.fasta
 
 # divide the input fasta into subsets with this number of sequences ?
@@ -20,7 +20,7 @@ nSeqsPerSubset=15
 OTU_REPSEQ_FILE="./BLAST_otu97repseqs_clean_aligned.fasta"
 
 # reference sequence database
-STATIC_FILE="./V16_LSUDB_2024_cut_aligned.fasta" 
+STATIC_FILE="./V18_LSUDB_052025_cut_aligned.fasta" 
 
 # how many OTU representative sequences are there?
 nRepSeqs=`grep -c '>' $OTU_REPSEQ_FILE`
