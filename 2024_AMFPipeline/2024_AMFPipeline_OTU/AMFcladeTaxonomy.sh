@@ -11,4 +11,4 @@
 . ~/.bashrc
 conda activate $C_ENV
 
-Rscript AMFcladesTaxonomy.R
+Rscript AMFcladeTaxonomy.R

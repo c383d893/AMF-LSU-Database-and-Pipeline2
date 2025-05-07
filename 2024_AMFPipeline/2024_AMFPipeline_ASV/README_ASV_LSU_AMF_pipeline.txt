@@ -242,3 +242,19 @@ sbatch --export=C_ENV=$C_ENV AMFcladeExtract.sh
 # 1. Create subsets for each AMF clade:
 
 sbatch --export=C_ENV=$C_ENV AMFcladeExtract_family.sh
+
+#########################################
+###### EXTRACT SEQS IN AMF Genus ########
+#########################################
+
+# 1. Create subsets for each AMF clade:
+
+sbatch --export=C_ENV=$C_ENV AMFcladesExtract.sh
+
+#########################################
+###### Generate a Taxonomy Table ########
+#########################################
+
+# 1. Create standard taxonomy table:
+
+sbatch --export=C_ENV=$C_ENV AMFcladeTaxonomy.sh
