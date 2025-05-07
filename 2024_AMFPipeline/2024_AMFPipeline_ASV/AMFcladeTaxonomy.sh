@@ -3,8 +3,8 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=16gb
 #SBATCH --time=00-06:00:00
-#SBATCH --output=./slurmOutputs/AMFcladeExtract.out
-#SBATCH --error=./slurmOutputs/AMFcladeExtract.out
+#SBATCH --output=./slurmOutputs/AMFcladeTaxonomy.out
+#SBATCH --error=./slurmOutputs/AMFcladeTaxonomy.out
 #SBATCH --job-name=AMFcladeTaxonomy.out
 
 ### Activate conda
