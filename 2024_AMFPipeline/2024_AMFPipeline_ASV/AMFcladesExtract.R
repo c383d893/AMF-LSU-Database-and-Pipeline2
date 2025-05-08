@@ -169,7 +169,7 @@ cladeDefs <- list(
   PAC_PAC = c("FM876832.1_Pacisporaceae_Pacispora_scintillans", "FM876831.1_Pacisporaceae_Pacispora_scintillans"),
   SAC_SAC = c("KX345943.1_Sclerocystaceae_Sacculospora_felinovii", "KX355820.1_Sclerocystaceae_Sacculospora_baltica"),
   DIV_DES = c("KF154769.1_Diversisporaceae_Desertispora_omaniana", "MG459208.1_Diversisporaceae_Desertispora_omaniana"),
-  DIV_COR = c("FJ461836.1_Diversisporaceae_Corymbiglomus_globiferum", "KF060295.1_Diversisporaceae_Corymbiglomus_corymbiforme"),
+  DIV_COR = c("FJ461836.1_Diversisporaceae_Paracorymbiglomus_globiferum", "KF060295.1_Diversisporaceae_Paracorymbiglomus_corymbiforme"),
   DIV_RED = c("HG518628.1_Diversisporaceae_Redeckera_megalocarpum", "MT832215.1_Diversisporaceae_Redeckera_megalocarpum"),
   DIV_DIV = c("KJ850201.1_Diversisporaceae_Diversispora_gibbosa", "AY639236.1_Diversisporaceae_Diversispora_celata"),
   ACA_ACA = c("MT832197.1_Acaulosporaceae_Acaulospora_colombiana", "OK356207.1_Acaulosporaceae_Acaulospora_excavata"),
