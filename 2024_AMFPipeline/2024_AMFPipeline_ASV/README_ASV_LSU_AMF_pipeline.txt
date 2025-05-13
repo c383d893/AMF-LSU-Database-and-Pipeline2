@@ -91,6 +91,9 @@ mkdir ./RAxMLfiles
 # Subdirectory for all Output/Error files
 mkdir ./slurmOutputs
 
+# Subdirectory for all clade Output files
+mkdir ./cladeOutputs
+
 ###########################################
 ####### REQUIRED FILES & LOCATIONS ########
 ###########################################
@@ -226,28 +229,13 @@ find . -name "buildTree*.out" | xargs grep -E 'DUE TO TIME LIMIT'
 cd ..
 
 #########################################
-###### EXTRACT SEQS IN AMF PHYLUM #######
+###### EXTRACT SEQS IN AMF Clades #######
 #########################################
 
-# 1. Determine which seqs fall within the AMF clade, 
+# 1. Determine which seqs fall within the AMF clades, 
 #    and make subsets of the rep-seqs and seqs table
-#    for AMF-seqs and non-AMF-seqs
-
-sbatch --export=C_ENV=$C_ENV AMFcladeExtract.sh
-
-#########################################
-###### EXTRACT SEQS IN AMF FAMILIES #####
-#########################################
-
-# 1. Create subsets for each AMF clade:
-
-sbatch --export=C_ENV=$C_ENV AMFcladeExtract_family.sh
-
-#########################################
-###### EXTRACT SEQS IN AMF Genus ########
-#########################################
-
-# 1. Create subsets for each AMF clade:
+#    for AMF-seqs and non-AMF-seqs. Additionally,
+#    create subsets for each AMF clade. 
 
 sbatch --export=C_ENV=$C_ENV AMFcladesExtract.sh
 

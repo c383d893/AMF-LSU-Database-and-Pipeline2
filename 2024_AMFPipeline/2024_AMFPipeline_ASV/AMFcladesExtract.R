@@ -78,11 +78,11 @@ cladeDefs <- list(
   SCL_KAM = c("MT832183.1_Sclerocystaceae_Oehlia_diaphana", "MN130956.1_Sclerocystaceae_Rhizophagus_maiae"),
   GIG = c("HQ871519.1_Gigasporaceae_Scutellospora_pernambucana", "OP205496.1_Gigasporaceae_Gigaspora_polymorphira"),
   PAC = c("FM876832.1_Pacisporaceae_Pacispora_scintillans", "FM876831.1_Pacisporaceae_Pacispora_scintillans"),
-  SAC = c("KX345943.1_Sclerocystaceae_Sacculospora_felinovii", "KX355820.1_Sclerocystaceae_Sacculospora_baltica"),
+  SAC = c("KX345943.1_Sacculosporaceae_Sacculospora_felinovii", "KX355820.1_Sacculosporaceae_Sacculospora_baltica"),
   DIV = c("KF154769.1_Diversisporaceae_Desertispora_omaniana", "AY639236.1_Diversisporaceae_Diversispora_celata"),
   ACA = c("MT832197.1_Acaulosporaceae_Acaulospora_colombiana", "OK356207.1_Acaulosporaceae_Acaulospora_excavata"),
   PER = c("KY630236.1_Pervetustaceae_Pervetustus_simplex", "MT832159.1_Pervetustaceae_Pervetustus_simplex"),
-  PAR = c("KY630232.1_Paraglomeraceae_Innospora_majewskii", "FR750083.1_Paraglomeraceae_Paraglomus_laccatum"),
+  PAR = c("KY630232.1_Paraglomeraceae_Innospora_majewskii", "FR750083.1_Paraglomeraceae_Paraglomus_laccatum")
 )
 
 for (cladeName in names(cladeDefs)) {
@@ -167,9 +167,10 @@ cladeDefs <- list(
   GIG_PAR = c("JN971081.1_Gigasporaceae_Paradentiscutata_maritima", "JN971070.1_Gigasporaceae_Paradentiscutata_baiana"),
   GIG_GIG = c("OQ680684.1_Gigasporaceae_Gigaspora_siqueirae", "OP205496.1_Gigasporaceae_Gigaspora_polymorphira"),
   PAC_PAC = c("FM876832.1_Pacisporaceae_Pacispora_scintillans", "FM876831.1_Pacisporaceae_Pacispora_scintillans"),
-  SAC_SAC = c("KX345943.1_Sclerocystaceae_Sacculospora_felinovii", "KX355820.1_Sclerocystaceae_Sacculospora_baltica"),
+  SAC_SAC = c("KX345943.1_Sacculosporaceae_Sacculospora_felinovii", "KX355820.1_Sacculosporaceae_Sacculospora_baltica"),
   DIV_DES = c("KF154769.1_Diversisporaceae_Desertispora_omaniana", "MG459208.1_Diversisporaceae_Desertispora_omaniana"),
-  DIV_COR = c("FJ461836.1_Diversisporaceae_Paracorymbiglomus_globiferum", "KF060295.1_Diversisporaceae_Paracorymbiglomus_corymbiforme"),
+  DIV_PAR = c("FJ461836.1_Diversisporaceae_Paracorymbiglomus_globiferum", "HG532012.1_Diversisporaceae_Paracorymbiglomus_pacificum"),
+  DIV_COR = c("KF060296.1_Diversisporaceae_Corymbiglomus_corymbiforme", "KF060295.1_Diversisporaceae_Corymbiglomus_corymbiforme"),
   DIV_RED = c("HG518628.1_Diversisporaceae_Redeckera_megalocarpum", "MT832215.1_Diversisporaceae_Redeckera_megalocarpum"),
   DIV_DIV = c("KJ850201.1_Diversisporaceae_Diversispora_gibbosa", "AY639236.1_Diversisporaceae_Diversispora_celata"),
   ACA_ACA = c("MT832197.1_Acaulosporaceae_Acaulospora_colombiana", "OK356207.1_Acaulosporaceae_Acaulospora_excavata"),
