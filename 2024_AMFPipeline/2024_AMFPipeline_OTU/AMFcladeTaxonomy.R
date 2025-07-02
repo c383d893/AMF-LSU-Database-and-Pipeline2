@@ -45,8 +45,8 @@ SCL_KAM_OEH <- read.table(file='./cladeOutputs/ASVtable_clean_AMFSCL_KAM_OEHonly
 SCL_KAM_KAM <- read.table(file='./cladeOutputs/ASVtable_clean_AMFSCL_KAM_KAMonly.tsv',header = TRUE, sep = '\t') %>% select(X.ASV.ID) %>% mutate(X.ASV.ID = as.character(X.ASV.ID),genus = "Kamienskia")
 SCL_KAM_EPI <- read.table(file='./cladeOutputs/ASVtable_clean_AMFSCL_KAM_EPIonly.tsv',header = TRUE, sep = '\t') %>% select(X.ASV.ID) %>% mutate(X.ASV.ID = as.character(X.ASV.ID),genus = "Epigeocarpum")
 SCL_KAM_HAL <- read.table(file='./cladeOutputs/ASVtable_clean_AMFSCL_KAM_HALonly.tsv',header = TRUE, sep = '\t') %>% select(X.ASV.ID) %>% mutate(X.ASV.ID = as.character(X.ASV.ID),genus = "Halonatospora")
-SCL_KAM_MIC <- read.table(file='./cladeOutputs/ASVtable_clean_AMFSCL_KAM_SCLonly.tsv',header = TRUE, sep = '\t') %>% select(X.ASV.ID) %>% mutate(X.ASV.ID = as.character(X.ASV.ID),genus = "Microkamienskia")
-SCL_KAM_SCL <- read.table(file='./cladeOutputs/ASVtable_clean_AMFSCL_KAM_KAMonly.tsv',header = TRUE, sep = '\t') %>% select(X.ASV.ID) %>% mutate(X.ASV.ID = as.character(X.ASV.ID),genus = "Sclerocystis")
+SCL_KAM_MIC <- read.table(file='./cladeOutputs/ASVtable_clean_AMFSCL_KAM_MIConly.tsv',header = TRUE, sep = '\t') %>% select(X.ASV.ID) %>% mutate(X.ASV.ID = as.character(X.ASV.ID),genus = "Microkamienskia")
+SCL_KAM_SCL <- read.table(file='./cladeOutputs/ASVtable_clean_AMFSCL_KAM_SCLonly.tsv',header = TRUE, sep = '\t') %>% select(X.ASV.ID) %>% mutate(X.ASV.ID = as.character(X.ASV.ID),genus = "Sclerocystis")
 SCL_KAM_SIL <- read.table(file='./cladeOutputs/ASVtable_clean_AMFSCL_KAM_SILonly.tsv',header = TRUE, sep = '\t') %>% select(X.ASV.ID) %>% mutate(X.ASV.ID = as.character(X.ASV.ID),genus = "Silvaspora")
 SCL_KAM_RHI <- read.table(file='./cladeOutputs/ASVtable_clean_AMFSCL_KAM_RHIonly.tsv',header = TRUE, sep = '\t') %>% select(X.ASV.ID) %>% mutate(X.ASV.ID = as.character(X.ASV.ID),genus = "Rhizophagus")
 GIG_SCU <- read.table(file='./cladeOutputs/ASVtable_clean_AMFGIG_SCUonly.tsv',header = TRUE, sep = '\t') %>% select(X.ASV.ID) %>% mutate(X.ASV.ID = as.character(X.ASV.ID),genus = "Scutellospora")
@@ -90,4 +90,3 @@ AMF.tax <- merge(
 
 # Write to file:
 write.table(AMF.tax,file='./ASVtable_clean_AMFonly_taxonomy.tsv',sep='\t',quote=FALSE,row.names=FALSE,col.names = TRUE)
-  
